@@ -389,6 +389,16 @@
 </head>
 <body>
 <header>
+    <div id="login-container">
+    <h2>Login</h2>
+    <form id="login-form">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+      <button type="submit">Login</button>
+    </form>
+  </div>
   <div class="user-greeting">
     <img src="https://via.placeholder.com/50" alt="Matthew's Avatar" class="profile-pic">
     <h1>Hi Matthew</h1>
@@ -555,6 +565,41 @@
     }
   </style>
     <script>
+       document.getElementById('login-form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent form submission
+
+    // Get username and password from the form
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    // Perform authentication (You need to implement this)
+    const isAuthenticated = authenticateUser(username, password);
+
+    if (isAuthenticated) {
+      // Redirect user based on their role
+      redirectToDashboard(username); // You need to implement this
+    } else {
+      // Show error message or handle failed login
+      alert('Invalid username or password');
+    }
+  });
+
+  // Function to authenticate user (You need to implement this)
+  function authenticateUser(username, password) {
+    // Placeholder authentication logic
+    // Replace this with your actual authentication logic
+    return (username === 'admin' && password === 'admin');
+  }
+
+  // Function to redirect user to appropriate dashboard
+  function redirectToDashboard(username) {
+    // Example: Redirect to different dashboards based on username
+    if (username === 'admin') {
+      window.location.href = 'admin_dashboard.html';
+    } else {
+      window.location.href = 'client_dashboard.html';
+    }
+  }
       // Client Dashboard: Send appointment notifications to Admin Dashboard
 function sendAppointmentNotificationToAdmin(appointmentDetails) {
   // Send POST request to Admin Dashboard endpoint
