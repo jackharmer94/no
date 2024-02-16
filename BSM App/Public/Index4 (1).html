@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BodySoftware System</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+ <style>
+    /* General styles */
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+      overflow-x: hidden !important;
+    }
+  
+    header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      background-color: #DCA365;
+      color: #fff;
+      text-align: center;
+      position: relative;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+      overflow-x: hidden !important;
+    }
+
+    header {
+      background-color: #DCA365;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+    }
+
+    .user-greeting {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .profile-pic {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    nav {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    li {
+      margin: 5px;
+    }
+
+    main {
+      padding: 10px;
+    }
+
+    section {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      color: #DCA365;
+      font-size: 1.2em;
+      margin-bottom: 15px;
+    }
+
+    p {
+      margin-bottom: 15px;
+    }
+
+    form {
+      max-width: 100%;
+      margin-top: 15px;
+    }
+
+    label {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input,
+    button {
+      margin-bottom: 15px;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #DCA365;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #964d22;
+    }
+
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      max-width: 100vw;
+      box-sizing: border-box;
+    }
+
+    @media (min-width: 768px) {
+      header {
+        padding: 20px;
+      }
+
+      nav {
+        padding: 10px 0;
+      }
+
+      ul {
+        justify-content: flex-start;
+      }
+
+      li {
+        margin: 0 10px;
+      }
+
+      main {
+        padding: 20px;
+      }
+
+      section {
+        padding: 20px;
+      }
+
+      input,
+      button {
+        width: auto;
+      }
+    }
+  
+    h1 {
+      margin: 0;
+      font-size: 1.5em;
+    }
+  
+    nav {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+    }
+  
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: space-around;
+    }
+  
+    main {
+      padding: 20px;
+      box-sizing: border-box;
+    }
+  
+    section {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+  
+    h2 {
+      color: #DCA365;
+      font-size: 1.5em;
+      margin-bottom: 15px;
+    }
+  
+    p {
+      margin-bottom: 15px;
+    }
+  
+    form {
+      max-width: 300px;
+      margin-top: 15px;
+    }
+  
+    label {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+  
+    input {
+      margin-bottom: 15px;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      width: 100%;
+    }
+  
+    button {
+      background-color: #DCA365;
+      color: #fff;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: 100%;
+    }
+  
+    button:hover {
+      background-color: #964d22;
+    }
+        /* Courses Section Styles */
+        #course-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-evenly;
+      gap: 20px;
+    }
+
+    .course {
+      width: calc(50% - 25px);
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    @media (max-width: 768px) {
+      .course {
+        width: calc(50% - 20px);
+      }
+    }
+  
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      max-width: 100vw;
+      box-sizing: border-box;
+    }
+  
+    .profile-pic {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+  
+    .user-greeting {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+  
+    /* Adjustments for responsiveness */
+    @media (max-width: 768px) {
+      body {
+        font-size: 14px;
+      }
+  
+      h1 {
+        font-size: 1.2em;
+      }
+  
+      h2 {
+        font-size: 1.3em;
+      }
+  
+      p {
+        font-size: 14px;
+      }
+  
+      header {
+        padding: 10px;
+      }
+  
+      ul {
+        flex-direction: column;
+      }
+  
+      main {
+        padding: 10px;
+      }
+  
+      section {
+        padding: 10px;
+      }
+  
+      form {
+        max-width: 100%;
+      }
+  
+      label,
+      input,
+      button {
+        width: 100%;
+      }
+  
+      canvas {
+        margin-bottom: 10px;
+      }
+    }
+  
+    /* Notifications section */
+    /* Adjustments for the bell icon */
+    #notifications-icon {
+      position: relative;
+    }
+    
+    .notification-icon {
+      margin-right: 5px;
+    }
+    
+    /* Notifications dropdown */
+    #notifications-dropdown {
+      position: absolute;
+      top: calc(100% + 5px);
+      right: 0;
+      z-index: 2;
+      display: none;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 10px;
+      max-height: 200px; /* Set the maximum height for the dropdown */
+      overflow-y: auto; /* Enable vertical scrolling */
+      color: #333; /* Set font color */
+      font-size: 14px; /* Set font size */
+    }
+    
+    #notifications-dropdown.show {
+      display: block;
+    }
+    
+    .notification {
+      margin-bottom: 5px;
+    }
+    
+    .notification-text {
+      color: #333; /* Set font color */
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="user-greeting">
+    <img src="https://via.placeholder.com/50" alt="Matthew's Avatar" class="profile-pic">
+    <h1>Hi Matthew</h1>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Services</a></li>
+      <li><a href="#">Contact</a></li>
+      <li><a href="settings.html">Settings</a></li>
+      <li id="notifications-icon"><a href="#" onclick="toggleNotifications()"><span class="notification-icon">🔔</span></a></li>
+      <button id="logoutBtn">Logout</button>
+    </ul>
+  </nav>
+  <div id="notifications-dropdown"></div>
+</header>
+
+<main>
+  <section id="pain-scoring">
+    <canvas id="painChart" width="400" height="200"></canvas>
+    <h2>Pain Scoring</h2>
+    <p>Record your pain levels using the pain chart below:</p>
+    <p>Previous Scorings:</p>
+    <ul id="previous-scores">
+      <!-- Previous pain scores will be dynamically added here -->
+    </ul>
+    <form id="add-pain-score-form">
+      <label for="painScore">Add Your Pain Score:</label>
+      <input type="number" id="painScore" name="painScore" required>
+      <button type="submit">Add Score</button>
+    </form>
+  </section>
+  <script>
+    $(document).ready(function() {
+      // Fetch previous pain scores and update the chart
+      $.get("http://localhost:3000/api/pain-scores", function(previousScores) {
+        updateChart(previousScores);
+      });
+
+      // Add event listener for submitting pain score
+      $('#add-pain-score-form').submit(function(event) {
+        event.preventDefault(); // Prevent form submission
+        const painScore = $('#painScore').val();
+        $.post("http://localhost:3000/api/pain-scores/submit", { painScore: painScore }, function(response) {
+          // Update chart with the new pain score
+          updateChart(response.previousScores);
+          // Clear input field
+          $('#painScore').val('');
+        });
+      });
+    });
+
+    function updateChart(previousScores) {
+      const dates = previousScores.map(score => score.date);
+      const painLevels = previousScores.map(score => score.level);
+      const ctx = document.getElementById('painChart').getContext('2d');
+      const chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: dates,
+          datasets: [{
+            label: 'Pain Level',
+            data: painLevels,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1,
+            fill: false
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              suggestedMax: 10
+            }
+          }
+        }
+      });
+    }
+  </script>
+  <section id="questionnaire-container">
+    <h2>Questionnaire</h2>
+    <form id="questionnaire-form">
+      <!-- Questionnaire content will be dynamically added here -->
+    </form>
+    <button onclick="submitQuestionnaire()">Submit</button>
+  </section>
+
+  <script>
+    // Fetch questionnaire from the backend
+    $(document).ready(function() {
+      $.get("http://localhost:3000/api/questionnaire", function(questionnaire) {
+        // Iterate over questionnaire and add questions to the form
+        questionnaire.forEach(question => {
+          $('#questionnaire-form').append(`<label>${question.question}</label><br>`);
+          if (question.type === "rating") {
+            $('#questionnaire-form').append(`<input type="number" name="question${question.id}" min="1" max="10" required><br>`);
+          } else {
+            $('#questionnaire-form').append(`<input type="text" name="question${question.id}" required><br>`);
+          }
+        });
+      });
+    });
+
+    // Function to submit questionnaire responses
+    function submitQuestionnaire() {
+      const formData = $('#questionnaire-form').serializeArray();
+      $.post("http://localhost:3000/api/questionnaire/submit", formData, function(response) {
+        alert(response.message); // Show success message
+      });
+    }
+  </script>
+      <section id="courses">
+    <h2>Courses</h2>
+    <p>Explore our courses and educational resources:</p>
+    <div id="course-list" class="course-list">
+      <!-- Placeholder courses -->
+      <div class="course">
+        <h3>Loading Course...</h3>
+        <p>Description coming soon...</p>
+        <img src="https://via.placeholder.com/300" alt="Course Placeholder">
+      </div>
+      <div class="course">
+        <h3>Loading Course...</h3>
+        <p>Description coming soon...</p>
+        <img src="https://via.placeholder.com/300" alt="Course Placeholder">
+      </div>
+      <div class="course">
+        <h3>Loading Course...</h3>
+        <p>Description coming soon...</p>
+        <img src="https://via.placeholder.com/300" alt="Course Placeholder">
+      </div>
+    </div>
+  </section>
+  
+  <style>
+    .course-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px; /* Adjust the gap between placeholders */
+    }
+  
+    .course {
+      width: calc(10% - 20px); /* Adjust the width of placeholders */
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  
+    .course h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+  
+    .course p {
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+  
+    .course img {
+      width: 100%;
+      border-radius: 8px;
+    }
+  </style>
+    <script>
+      // Client Dashboard: Send appointment notifications to Admin Dashboard
+function sendAppointmentNotificationToAdmin(appointmentDetails) {
+  // Send POST request to Admin Dashboard endpoint
+  fetch('http://admindashboard.com/api/appointment-notifications', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(appointmentDetails),
+  })
+  .then(response => {
+    if (response.ok) {
+      console.log('Appointment notification sent to admin.');
+    } else {
+      console.error('Failed to send appointment notification to admin.');
+    }
+  })
+  .catch(error => {
+    console.error('Error sending appointment notification:', error);
+  });
+}
+      // Function to fetch courses from the backend
+      async function fetchCourses() {
+        try {
+          // Mock response data for testing
+          const responseData = {
+            courses: [
+              {
+                id: 1,
+                title: "Introduction to BodyHealth",
+                description: "Learn the basics of maintaining a healthy body.",
+                imageUrl: "https://via.placeholder.com/300",
+              },
+              {
+                id: 2,
+                title: "Managing Chronic Pain",
+                description: "Learn strategies for managing chronic pain effectively.",
+                imageUrl: "https://via.placeholder.com/300",
+              },
+              {
+                id: 3,
+                title: "Nutrition for a Healthy Body",
+                description: "Explore the role of nutrition in maintaining a healthy body.",
+                imageUrl: "https://via.placeholder.com/300",
+              }
+            ]
+          };
+    
+          // Simulate delay to mimic fetch request
+          await new Promise(resolve => setTimeout(resolve, 1000));
+    
+          return responseData.courses;
+        } catch (error) {
+          console.error('Error fetching courses:', error);
+          return []; // Return an empty array in case of an error
+        }
+      }
+    
+      // Function to display courses in the courses section
+      async function displayCourses() {
+        const coursesSection = document.getElementById('course-list');
+        const courses = await fetchCourses(); // Fetch courses from the backend
+    
+        // Clear previous courses
+        coursesSection.innerHTML = '';
+    
+        // Iterate over fetched courses and create HTML elements to display them
+        courses.forEach(course => {
+          const courseContainer = document.createElement('div');
+          courseContainer.classList.add('course');
+    
+          // Create and append course title
+          const title = document.createElement('h3');
+          title.textContent = course.title;
+          courseContainer.appendChild(title);
+    
+          // Create and append course description
+          const description = document.createElement('p');
+          description.textContent = course.description;
+          courseContainer.appendChild(description);
+    
+          // Create and append course image
+          const image = document.createElement('img');
+          image.src = course.imageUrl;
+          image.alt = course.title;
+          courseContainer.appendChild(image);
+    
+          // Append course container to the courses section
+          coursesSection.appendChild(courseContainer);
+        });
+      }
+    
+      // Call the displayCourses function to fetch and display courses when the page loads
+      window.onload = displayCourses;
+    </script>
+        <section id="appointments">
+    <h2>Appointments</h2>
+    <p>View your upcoming appointments and schedule new ones:</p>
+    <ul id="appointment-list">
+      <li>January 10, 2023 - 2:00 PM: Physical Therapy Session</li>
+      <li>February 5, 2023 - 10:30 AM: Doctor's Appointment</li>
+      <!-- Add more appointments as needed -->
+    </ul>
+
+    <!-- Date and Time Selection -->
+    <label for="appointmentDate">Select Date:</label>
+    <input type="text" id="appointmentDate" placeholder="Select date" data-input>
+
+    <label for="appointmentTime">Select Time:</label>
+    <input type="text" id="appointmentTime" placeholder="Select time" data-input>
+
+    <!-- Schedule Appointment Button -->
+    <button onclick="scheduleAppointment()">Schedule Appointment</button>
+  </section>
+</main>
+  
+    <footer>
+      <p>&copy; 2023 BodySoftware System</p>
+    </footer>
+  
+    <!-- Notifications section at the bottom of the page -->
+    <section id="notifications">
+      <h2>Notifications</h2>
+      <div id="notification-list">
+        <!-- Placeholder for notifications -->
+        <div class="notification">
+          <span class="notification-icon">🔔</span>
+          <span class="notification-text">New course available: "Advanced BodySoftware Techniques"</span>
+        </div>
+        <div class="notification">
+          <span class="notification-icon">🔔</span>
+          <span class="notification-text">Appointment reminder: Tomorrow at 2:00 PM</span>
+        </div>
+        <!-- Add more notifications as needed -->
+      </div>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  </body>
+  <script>
+    // Schedule Appointment function
+    function scheduleAppointment() {
+      const appointmentDateInput = document.getElementById('appointmentDate');
+      const appointmentTimeInput = document.getElementById('appointmentTime');
+      const appointmentDate = appointmentDateInput.value;
+      const appointmentTime = appointmentTimeInput.value;
+  
+      // Perform validation if needed
+      if (!isValidAppointmentDate(appointmentDate)) {
+        alert('Please select a valid appointment date.');
+        return;
+      }
+  
+      // Create a new appointment element and add it to the list
+      const appointmentList = document.getElementById('appointment-list');
+      const newAppointment = document.createElement('li');
+      newAppointment.textContent = `${appointmentDate} - ${appointmentTime}: New Appointment`;
+      appointmentList.appendChild(newAppointment);
+  
+      // Clear the date and time pickers
+      appointmentDateInput.value = '';
+      appointmentTimeInput.value = '';
+  
+      // Display a notification for the user
+      const userNotification = `Appointment scheduled for ${appointmentDate} at ${appointmentTime}`;
+      displayNotification(userNotification);
+  
+      // Send appointment data to the admin
+      const adminNotification = `New appointment scheduled for ${appointmentDate} at ${appointmentTime}`;
+      sendNotificationToAdmin(adminNotification);
+    }
+  
+    // Function to display notifications
+    function displayNotification(message) {
+      // Create a new notification element
+      const notificationElement = document.createElement('div');
+      notificationElement.classList.add('notification');
+      notificationElement.innerHTML = `<span class="notification-text">${message}</span>`;
+  
+      // Append the notification to the notifications dropdown
+      const notificationsDropdown = document.getElementById('notifications-dropdown');
+      if (notificationsDropdown) {
+        notificationsDropdown.appendChild(notificationElement);
+      } else {
+        console.error('Notifications dropdown element not found');
+      }
+    }
+  
+    // Function to send notification to the admin
+    function sendNotificationToAdmin(message) {
+      // In a real scenario, you would send this message to the admin dashboard
+      console.log('Sending notification to admin:', message);
+      // Simulating sending the notification to the admin dashboard
+      alert('Notification sent to admin: ' + message);
+    }
+  
+    // Toggle Notifications function
+    function toggleNotifications() {
+      const notificationsDropdown = document.getElementById('notifications-dropdown');
+      if (notificationsDropdown) {
+        notificationsDropdown.classList.toggle('show');
+      }
+    }
+  
+    // Add this function for validation if needed
+    function isValidAppointmentDate(date) {
+      // Add your validation logic here, for example:
+      // Check if the date is in the future, etc.
+      return true; // Replace with your validation conditions
+    }
+  
+    // Initialize flatpickr for date and time selection
+    const dateInput = document.getElementById('appointmentDate');
+    const timeInput = document.getElementById('appointmentTime');
+  
+    flatpickr(dateInput, {
+      enableTime: false,
+      dateFormat: 'Y-m-d',
+      minDate: 'today',
+      defaultDate: 'today',
+      altInput: true,
+      altFormat: 'F j, Y',
+      onChange: function(selectedDates) {
+        if (selectedDates.length > 0) {
+          const selectedDate = selectedDates[0];
+          const minTime = selectedDate.setHours(8, 0); // 8:00 AM
+          const maxTime = selectedDate.setHours(20, 0); // 8:00 PM
+  
+          flatpickr(timeInput, {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: 'H:i',
+            defaultDate: '09:00',
+            minTime: minTime,
+            maxTime: maxTime,
+            time_24hr: true,
+            minuteIncrement: 60,
+            disable: [
+              function (date) {
+                const hour = date.getHours();
+                return (hour >= 19 || hour < 8 || (hour === 8 && date.getMinutes() < 30));
+              },
+            ],
+          });
+        }
+      }
+    });
+  </script>
+  </body>
+  </html>

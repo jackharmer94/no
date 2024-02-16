@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ <style>
+ body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
+
+    main {
+      padding: 20px;
+      padding-bottom: 100px; /* Add padding to the bottom */
+    }
+
+    h2 {
+      color: #DCA365;
+      font-size: 1.5em;
+      margin-bottom: 15px;
+    }
+
+    section {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    p {
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+      /* Styling for the chart widget */
+      #total-sales-chart {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    #salesChart {
+      width: 75%;
+      height: 150px; /* Adjust the height as needed */
+    }
+
+    input,
+    select,
+    button {
+      margin-bottom: 15px;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #DCA365;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #964d22;
+    }
+
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      main {
+        padding: 40px;
+        padding-bottom: 120px; /* Adjust padding for larger screens if needed */
+      }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Admin Dashboard</h1>
+</header>
+
+<main>
+    <section id="total-sales-chart">
+        <h2>Total Sales</h2>
+        <canvas id="salesChart"></canvas> <!-- Chart will be rendered here -->
+      </section>
+
+  <section id="client-selection">
+    <h2>Client Selection</h2>
+    <label for="clientSelect">Select Client:</label>
+    <select id="clientSelect">
+      <option value="client1">Client 1</option>
+      <option value="client2">Client 2</option>
+      <!-- Add more options as needed -->
+    </select>
+  </section>
+
+  <section id="manage-appointments">
+    <h2>Manage Appointments</h2>
+    <!-- Add content and form for managing appointments -->
+    <form id="add-appointment-form">
+      <label for="appointmentDate">Date:</label>
+      <input type="date" id="appointmentDate" name="appointmentDate" required>
+      <label for="appointmentTime">Time:</label>
+      <input type="time" id="appointmentTime" name="appointmentTime" required>
+      <button type="submit">Add Appointment</button>
+    </form>
+    <ul id="appointment-list"></ul>
+  </section>
+
+  <section id="manage-notifications">
+    <h2>Manage Notifications</h2>
+    <!-- Add content and form for managing notifications -->
+    <ul id="notification-list"></ul>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2023 BodySoftware System</p>
+</footer>
+
+<script>
+  // Function to fetch notifications for a specific client
+  async function fetchNotifications(clientId) {
+    try {
+      const response = await fetch(`http://clientdashboard.com/api/${clientId}/notifications`);
+      const data = await response.json();
+      return data.notifications;
+    } catch (error) {
+      console.error('Error fetching notifications:', error);
+      return [];
+    }
+  }
+
+  // Function to fetch appointments for a specific client
+  async function fetchAppointments(clientId) {
+    try {
+      const response = await fetch(`http://clientdashboard.com/api/${clientId}/appointments`);
+      const data = await response.json();
+      return data.appointments;
+    } catch (error) {
+      console.error('Error fetching appointments:', error);
+      return [];
+    }
+  }
+
+  // Function to display notifications
+  async function displayNotifications(clientId) {
+    const notificationList = document.getElementById('notification-list');
+    const notifications = await fetchNotifications(clientId);
+
+    notificationList.innerHTML = ''; // Clear existing notifications
+
+    notifications.forEach(notification => {
+      const listItem = document.createElement('li');
+      listItem.textContent = notification.message;
+      notificationList.appendChild(listItem);
+    });
+  }
+
+  // Function to display appointments
+  async function displayAppointments(clientId) {
+    const appointmentList = document.getElementById('appointment-list');
+    const appointments = await fetchAppointments(clientId);
+
+    appointmentList.innerHTML = ''; // Clear existing appointments
+
+    appointments.forEach(appointment => {
+      const listItem = document.createElement('li');
+      listItem.textContent = `${appointment.date} - ${appointment.time}: ${appointment.title}`;
+      appointmentList.appendChild(listItem);
+    });
+  }
+
+  // Call the display functions when the page loads
+  window.onload = function() {
+    const clientSelect = document.getElementById('clientSelect');
+    const clientId = clientSelect.value;
+
+    displayNotifications(clientId);
+    displayAppointments(clientId);
+
+    // Add event listener to client select dropdown
+    clientSelect.addEventListener('change', function() {
+      const selectedClientId = clientSelect.value;
+      displayNotifications(selectedClientId);
+      displayAppointments(selectedClientId);
+    });
+  };
+
+  // Function to handle adding an appointment
+  document.getElementById('add-appointment-form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    const appointmentDate = document.getElementById('appointmentDate').value;
+    const appointmentTime = document.getElementById('appointmentTime').value;
+
+    // Construct the appointment string
+    const appointmentString = `${appointmentDate} - ${appointmentTime}`;
+
+    // Create a new list item for the appointment
+    const appointmentListItem = document.createElement('li');
+    appointmentListItem.textContent = appointmentString;
+
+    // Append the appointment to the list
+    document.getElementById('appointment-list').appendChild(appointmentListItem);
+
+    // Clear the form fields
+    document.getElementById('appointmentDate').value = '';
+    document.getElementById('appointmentTime').value = '';
+  });
+
+  // Function to handle deleting an appointment
+  document.getElementById('appointment-list').addEventListener('click', function(event) {
+    if (event.target.tagName === 'LI') {
+      event.target.remove(); // Remove the appointment list item
+    }
+  });
+   // Fetch total sales data from Shopify API and update the chart
+  // Replace the placeholder code below with your actual data fetching logic
+
+  // Sample data
+  const salesData = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    datasets: [{
+      label: 'Total Sales',
+      data: [1000, 1500, 1200, 1800, 2000, 2500, 2200], // Sample sales data
+      backgroundColor: 'rgba(75, 192, 192, 0.2)',
+      borderColor: 'rgba(75, 192, 192, 1)',
+      borderWidth: 1
+    }]
+  };
+
+  // Create and update the chart
+  const salesChartCtx = document.getElementById('salesChart').getContext('2d');
+  const salesChart = new Chart(salesChartCtx, {
+    type: 'line',
+    data: salesData,
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+// Admin Dashboard: Handle incoming appointment notifications
+app.post('/api/appointment-notifications', (req, res) => {
+  const appointmentDetails = req.body;
+  // Process appointment notification (e.g., display in notification section)
+  console.log('Received appointment notification from client:', appointmentDetails);
+  // Add appointment notification to the notification section
+  // Update UI to display the new appointment notification
+  res.sendStatus(200); // Send response back to client
+});
+</script>
+</body>
+</html>

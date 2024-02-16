@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="login-container">
+    <h2>Login</h2>
+    <form id="login-form">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+  <scriptdocument.getElementById('login-form').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+  
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        const role = data.role;
+  
+        // Redirect to the appropriate dashboard based on the user's role
+        if (role === 'admin') {
+          window.location.href = 'admin-dashboard.html';
+        } else if (role === 'client') {
+          window.location.href = 'client-dashboard.html';
+        } else {
+          alert('Invalid role');
+        }
+      } else {
+        alert('Invalid username or password');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred. Please try again later.');
+    }
+  });></script>
+</body>
+</html>

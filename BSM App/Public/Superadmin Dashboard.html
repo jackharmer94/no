@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Super Admin Dashboard</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+  <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/core/main.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid/main.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid/main.js"></script>
+
+  <style>
+    /* Add your CSS styles here */
+    /* General styles */
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    h2 {
+      color: #DCA365;
+      font-size: 1.5em;
+      margin-bottom: 15px;
+    }
+
+    section {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    p {
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input,
+    select,
+    button,
+    textarea {
+      margin-bottom: 15px;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #DCA365;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #964d22;
+    }
+
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+
+    #notification-calendar {
+      height: 400px; /* Adjust the height as needed */
+    }
+
+    #analytics-reporting {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+  /* Add styles for analytics and reporting section */
+  #analytics-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  #analytics-charts,
+  #reporting {
+    flex-basis: 48%;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+
+  #analytics-charts h3,
+  #reporting h3 {
+    color: #DCA365;
+    font-size: 1.2em;
+    margin-bottom: 15px;
+  }
+
+    /* Add more styles for analytics if needed */
+  </style>
+</head>
+<body>
+<header>
+  <h1>Super Admin Dashboard</h1>
+</header>
+
+<main>
+  <section id="dashboard-management">
+    <h2>Dashboard Management</h2>
+    <div id="admin-dashboards">
+      <h3>Admin Dashboards</h3>
+      <ul id="admin-dashboard-list">
+        <!-- Admin dashboards will be dynamically populated here -->
+      </ul>
+    </div>
+    <div id="client-dashboards">
+      <h3>Client Dashboards</h3>
+      <ul id="client-dashboard-list">
+        <!-- Client dashboards will be dynamically populated here -->
+      </ul>
+    </div>
+  </section>
+
+  <section id="settings-management">
+    <h2>Settings Management</h2>
+    <form id="settings-form">
+      <label for="company-name">Company Name:</label>
+      <input type="text" id="company-name" name="company-name" required>
+
+      <label for="timezone">Timezone:</label>
+      <select id="timezone" name="timezone">
+        <option value="GMT">GMT</option>
+        <option value="EST">EST</option>
+        <option value="CST">CST</option>
+        <!-- Add more options as needed -->
+      </select>
+
+      <label for="currency">Currency:</label>
+      <select id="currency" name="currency">
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="GBP">GBP</option>
+        <!-- Add more options as needed -->
+      </select>
+
+      <button type="submit">Save Settings</button>
+    </form>
+  </section>
+
+  <section id="user-management">
+    <h2>User Management</h2>
+    <form id="add-user-form">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+
+      <button type="submit">Add User</button>
+    </form>
+
+    <h3>Existing Users</h3>
+    <ul id="user-list">
+      <!-- Existing users will be dynamically populated here -->
+    </ul>
+  </section>
+
+
+  <section id="communication-hub">
+    <h2>Communication Hub</h2>
+  
+    <section id="manual-notification">
+      <h3>Manual Push Notification</h3>
+      <form id="manual-notification-form">
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" required></textarea>
+  
+        <label for="target-users">Target Users:</label>
+        <select id="target-users" name="target-users" multiple required>
+          <!-- Options for target users will be dynamically populated here -->
+        </select>
+  
+        <label for="notification-type">Notification Type:</label>
+        <select id="notification-type" name="notification-type" required>
+          <option value="manual">Manual</option>
+          <option value="automated">Automated</option>
+        </select>
+  
+        <button type="submit">Send Notification</button>
+      </form>
+    </section>
+  
+    <section id="automated-notification">
+        <h3>Automated Push Notification</h3>
+        <form id="automated-notification-form">
+          <label for="frequency">Frequency:</label>
+          <select id="frequency" name="frequency" required>
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+            <!-- Add more options as needed -->
+          </select>
+      
+          <label for="notification-content">Notification Content:</label>
+          <textarea id="notification-content" name="notification-content" required></textarea>
+      
+          <button type="submit">Save Automated Notification</button>
+        </form>
+      </section>
+      
+      <section id="calendar">
+        <h3>Notification Calendar</h3>
+        <div id="notification-calendar"></div>
+      </section>
+
+      <section id="analytics-reporting">
+        <h2>Analytics and Reporting</h2>
+        <div id="analytics-container">
+          <div id="analytics-charts">
+            <!-- Placeholder for analytics charts -->
+            <h3>Analytics Charts</h3>
+            <p>Analytics charts will be displayed here.</p>
+          </div>
+          <div id="reporting">
+            <!-- Placeholder for reporting tools -->
+            <h3>Reporting Tools</h3>
+            <p>Reporting tools will be available here.</p>
+          </div>
+        </div>
+      </section>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2023 BodySoftware System</p>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('notification-calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      plugins: [ 'dayGrid' ],
+      defaultView: 'dayGridMonth',
+      height: 'auto', // Adjust as needed
+      // Add more calendar options here if necessary
+    });
+    calendar.render();
+  });
+
+  // Function to fetch existing users from the backend
+  async function fetchUsers() {
+    try {
+      const response = await fetch('/api/users');
+      const data = await response.json();
+      return data.users;
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      return [];
+    }
+  }
+
+  // Function to display existing users
+  async function displayUsers() {
+    const userList = document.getElementById('user-list');
+    const users = await fetchUsers();
+
+    userList.innerHTML = ''; // Clear existing user list
+
+    users.forEach(user => {
+      const listItem = document.createElement('li');
+      listItem.textContent = `Username: ${user.username}, Email: ${user.email}`;
+      userList.appendChild(listItem);
+    });
+  }
+
+  // Call the display function when the page loads
+  window.onload = function () {
+    displayUsers();
+  };
+
+  // Function to handle form submission for adding users
+  document.getElementById('add-user-form').addEventListener('submit', async function (event) {
+    event.preventDefault(); // Prevent default form submission
+
+    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    // Here you can send the user data to the backend for processing
+    console.log('Username:', username);
+    console.log('Email:', email);
+    console.log('Password:', password);
+
+    // After adding the user, refresh the user list
+    await displayUsers();
+
+    // You can then update the UI or show a confirmation message
+    alert('User added successfully!');
+  });
+
+  // Function to handle user removal
+  document.getElementById('user-list').addEventListener('click', async function (event) {
+    if (event.target.tagName === 'LI') {
+      const username = event.target.textContent.split(':')[1].trim();
+      // Here you can send the username to the backend to remove the user
+      console.log('Removing user:', username);
+      // After removing the user, refresh the user list
+      await displayUsers();
+      // You can then update the UI or show a confirmation message
+      alert('User removed successfully!');
+    }
+  });
+
+  // Function to fetch admin dashboards from the backend
+  async function fetchAdminDashboards() {
+    try {
+      const response = await fetch('/api/admin-dashboards');
+      const data = await response.json();
+      return data.adminDashboards;
+    } catch (error) {
+      console.error('Error fetching admin dashboards:', error);
+      return [];
+    }
+  }
+
+  // Function to fetch client dashboards from the backend
+  async function fetchClientDashboards() {
+    try {
+      const response = await fetch('/api/client-dashboards');
+      const data = await response.json();
+      return data.clientDashboards;
+    } catch (error) {
+      console.error('Error fetching client dashboards:', error);
+      return [];
+    }
+  }
+
+  // Function to display admin dashboards
+  async function displayAdminDashboards() {
+    const adminDashboardList = document.getElementById('admin-dashboard-list');
+    const adminDashboards = await fetchAdminDashboards();
+
+    adminDashboardList.innerHTML = ''; // Clear existing dashboards
+
+    adminDashboards.forEach(dashboard => {
+      const listItem = document.createElement('li');
+      listItem.textContent = dashboard.name;
+      adminDashboardList.appendChild(listItem);
+    });
+  }
+
+  // Function to display client dashboards
+  async function displayClientDashboards() {
+    const clientDashboardList = document.getElementById('client-dashboard-list');
+    const clientDashboards = await fetchClientDashboards();
+
+    clientDashboardList.innerHTML = ''; // Clear existing dashboards
+
+    clientDashboards.forEach(dashboard => {
+      const listItem = document.createElement('li');
+      listItem.textContent = dashboard.name;
+      clientDashboardList.appendChild(listItem);
+    });
+  }
+
+  // Call the display functions when the page loads
+  window.onload = function () {
+    displayAdminDashboards();
+    displayClientDashboards();
+    displayUsers();
+  };
+
+  // Function to handle form submission for settings management
+  document.getElementById('settings-form').addEventListener('submit', async function (event) {
+    event.preventDefault(); // Prevent default form submission
+
+    const companyName = document.getElementById('company-name').value;
+    const timezone = document.getElementById('timezone').value;
+    const currency = document.getElementById('currency').value;
+
+    // Here you can send the form data to the backend for processing
+    console.log('Company Name:', companyName);
+    console.log('Timezone:', timezone);
+    console.log('Currency:', currency);
+
+    // You can then update the UI or show a confirmation message
+    alert('Settings saved successfully!');
+  });
+</script>
+</body>
+</html>
